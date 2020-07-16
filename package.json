@@ -9,8 +9,11 @@
     "@types/jest": "^24.0.0",
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.0",
+    "@types/react-avatar-editor": "^10.3.5",
     "@types/react-dom": "^16.9.0",
+    "gif.js": "^0.2.0",
     "react": "^16.13.1",
+    "react-avatar-editor": "^11.0.9",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
     "typescript": "~3.7.2"
@@ -52,7 +55,7 @@
     }
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": "eslint",
+    "*.{ts,tsx}": "eslint",
     "*.{json,html,css}": "prettier --check"
   },
   "prettier": {

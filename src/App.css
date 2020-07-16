@@ -1,11 +1,94 @@
 .App {
-  background-color: #49484c;
   margin: 0;
+  padding: 1em 0;
+}
+
+.App .GeneralControls {
+  margin: 0 auto 1em auto;
+}
+
+.GeneralControls-ControlTable {
+  margin: 0 auto;
+}
+
+.GeneralControls-ControlTable th {
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.GeneralControls-ControlTable td {
+  text-align: left;
+}
+
+.GeneralControls-ControlTable input[type='text'] {
+  width: 20em;
+}
+
+.GeneralControls-ControlTable span {
+  font-size: 0.8em;
+}
+
+#GeneralControls-Copyright {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  cursor: pointer;
+}
+
+.App .FaceList {
+  margin: 0 auto;
   padding: 0;
-  width: 100vw;
-  height: 100vh;
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
-  flex-direction: column;
+  justify-content: center;
+}
+
+.FaceList-Dummy {
+  width: 20px;
+}
+
+.FaceList-Max5 {
+  max-width: 770px;
+}
+
+.FaceList-Max4 {
+  max-width: 612px;
+}
+
+.FaceList-Max3 {
+  max-width: 460px;
+}
+
+.FaceEditor {
+  margin-right: 1px;
+  margin-bottom: 1px;
+}
+
+.Preview-Area {
+  margin-top: 1em;
+  text-align: center;
+}
+
+.Preview-Button {
+  display: block;
+  margin: 0 auto;
+}
+
+#Preview-Canvas {
+  display: block;
+  margin: 1em auto 0 auto;
+}
+
+#Preview-Canvas-Cache-Face {
+  display: none;
+}
+
+#Preview-Canvas-Cache-Title {
+  display: none;
+}
+
+#Preview-Canvas-Download-Link,
+#Preview-Canvas-Download-Link:active,
+#Preview-Canvas-Download-Link:hover,
+#Preview-Canvas-Download-Link:visited {
+  color: currentColor;
 }
