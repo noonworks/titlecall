@@ -55,8 +55,8 @@
     }
   },
   "lint-staged": {
-    "*.{ts,tsx}": "eslint",
-    "*.{json,html,css}": "prettier --check"
+    "src/**/*.{ts,tsx}": "eslint",
+    "src/**/*.{json,html,css}": "prettier --check"
   },
   "prettier": {
     "tabWidth": 2,
