@@ -1,38 +1,94 @@
 .App {
+  margin: 0;
+  padding: 1em 0;
+}
+
+.App .GeneralControls {
+  margin: 0 auto 1em auto;
+}
+
+.GeneralControls-ControlTable {
+  margin: 0 auto;
+}
+
+.GeneralControls-ControlTable th {
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.GeneralControls-ControlTable td {
+  text-align: left;
+}
+
+.GeneralControls-ControlTable input[type='text'] {
+  width: 20em;
+}
+
+.GeneralControls-ControlTable span {
+  font-size: 0.8em;
+}
+
+#GeneralControls-Copyright {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  cursor: pointer;
+}
+
+.App .FaceList {
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.FaceList-Dummy {
+  width: 20px;
+}
+
+.FaceList-Max5 {
+  max-width: 770px;
+}
+
+.FaceList-Max4 {
+  max-width: 612px;
+}
+
+.FaceList-Max3 {
+  max-width: 460px;
+}
+
+.FaceEditor {
+  margin-right: 1px;
+  margin-bottom: 1px;
+}
+
+.Preview-Area {
+  margin-top: 1em;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.Preview-Button {
+  display: block;
+  margin: 0 auto;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+#Preview-Canvas {
+  display: block;
+  margin: 1em auto 0 auto;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+#Preview-Canvas-Cache-Face {
+  display: none;
 }
 
-.App-link {
-  color: #61dafb;
+#Preview-Canvas-Cache-Title {
+  display: none;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+#Preview-Canvas-Download-Link,
+#Preview-Canvas-Download-Link:active,
+#Preview-Canvas-Download-Link:hover,
+#Preview-Canvas-Download-Link:visited {
+  color: currentColor;
 }
