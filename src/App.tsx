@@ -437,6 +437,8 @@ class App extends React.Component<AppProps, AppState> {
 
   drawCopyright(): void {
     if (!this.ctxFace) return;
+    this.ctxFace.lineJoin = 'round';
+    this.ctxFace.miterLimit = 3.0;
     this.ctxFace.font =
       "12px 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif";
     this.ctxFace.textAlign = 'center';
