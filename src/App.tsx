@@ -457,7 +457,7 @@ class App extends React.Component<AppProps, AppState> {
     return (
       'bold ' +
       fontSize +
-      "px 'Times New Roman', 'YuMincho', 'Hiragino Mincho ProN', 'Yu Mincho', 'MS PMincho', serif"
+      "px 'Times New Roman', 'YuMincho', 'Hiragino Mincho ProN', 'Yu Mincho', 'MS PMincho', 'Noto Serif JP', serif"
     );
   }
 
