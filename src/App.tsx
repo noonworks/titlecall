@@ -1,11 +1,12 @@
 import React from 'react';
 import './App.css';
-import FaceEditor from './components/molecules/FaceEditor';
+import FaceEditor, { Face } from './components/molecules/FaceEditor';
 
 type AppProps = {};
 
 type AppState = {
   length: number;
+  length_text: string;
   title: string;
   previewing: boolean;
   canDL: boolean;
@@ -13,6 +14,7 @@ type AppState = {
   fileName: string;
   recording: boolean;
   showCopyright: boolean;
+  editors: React.RefObject<FaceEditor>[];
 };
 
 const CANVAS_WIDTH = 480;
@@ -34,10 +36,7 @@ const MSEC_WHOLE = MSEC_BEFORE + MSEC_FACE + MSEC_FADE + MSEC_STOP + MSEC_AFTER;
 
 const COPYRIGHT = 'Copyright (C) SQUARE ENIX CO., LTD. All Rights Reserved.';
 
-type Face = {
-  canvas?: HTMLCanvasElement;
-  died: boolean;
-};
+const DEFAULT_LENGTH = 8;
 
 type Position = {
   x: number;
@@ -77,7 +76,8 @@ class App extends React.Component<AppProps, AppState> {
   constructor(props: AppProps) {
     super(props);
     this.state = {
-      length: 8,
+      length: DEFAULT_LENGTH,
+      length_text: '' + DEFAULT_LENGTH,
       title: '',
       previewing: false,
       canDL: false,
@@ -85,6 +85,9 @@ class App extends React.Component<AppProps, AppState> {
       fileName: '',
       recording: false,
       showCopyright: true,
+      editors: Array.from({ length: DEFAULT_LENGTH }).map((_) =>
+        React.createRef<FaceEditor>()
+      ),
     };
     this.handleMemberLengthChange = this.handleMemberLengthChange.bind(this);
     this.handleChangeTitle = this.handleChangeTitle.bind(this);
@@ -139,6 +142,7 @@ class App extends React.Component<AppProps, AppState> {
   faceList(): JSX.Element[] {
     return Array.from({ length: this.state.length }, (_, k) => k).map((key) => (
       <FaceEditor
+        ref={this.state.editors[key]}
         width={FACE_WIDTH}
         height={FACE_HEIGHT}
         key={key.toString()}
@@ -153,8 +157,25 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   handleMemberLengthChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const length = parseInt(e.target.value);
-    this.setState({ length });
+    const length_text = e.target.value || '';
+    let length = parseInt(length_text);
+    if (isNaN(length)) {
+      length = this.state.length;
+    } else {
+      if (length < 2) length = 2;
+      if (length > 8) length = 8;
+    }
+    this.setState((state) => {
+      if (length < state.editors.length) {
+        return { length, length_text, editors: state.editors.slice(0, length) };
+      } else if (length > state.editors.length) {
+        const editors: React.RefObject<FaceEditor>[] = state.editors.slice();
+        for (let i = state.editors.length; i < length; i++)
+          editors.push(React.createRef<FaceEditor>());
+        return { length, length_text, editors };
+      }
+      return { length, length_text, editors: state.editors.slice() };
+    });
   }
 
   handleChangeTitle(e: React.ChangeEvent<HTMLInputElement>) {
@@ -291,21 +312,11 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   getFaceCanvases(): Face[] {
-    const faces = document.querySelectorAll('.FaceEditor-Canvas');
-    if (faces.length !== this.state.length) return [];
-    const face_ctx = Array.from(faces)
-      .map((c) => {
-        if (!c) return null;
-        return (c as HTMLCanvasElement).getContext('2d');
-      })
-      .filter((ctx) => !!ctx);
-    if (face_ctx.length !== this.state.length) return [];
-    const checks = document.querySelectorAll('.FaceEditor-Controls-Died');
-    if (checks.length !== this.state.length) return [];
-    return Array.from(checks).map((c, index) => ({
-      canvas: (faces[index] as HTMLCanvasElement) || undefined,
-      died: (c as HTMLInputElement).checked || false,
-    }));
+    if (this.state.length !== this.state.editors.length) return [];
+    return this.state.editors.map((e) => {
+      if (!e.current) return { canvas: null, died: false };
+      return e.current.getFace();
+    });
   }
 
   getTitle(): string {
@@ -426,6 +437,8 @@ class App extends React.Component<AppProps, AppState> {
 
   drawCopyright(): void {
     if (!this.ctxFace) return;
+    this.ctxFace.lineJoin = 'round';
+    this.ctxFace.miterLimit = 3.0;
     this.ctxFace.font =
       "12px 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif";
     this.ctxFace.textAlign = 'center';
@@ -446,7 +459,7 @@ class App extends React.Component<AppProps, AppState> {
     return (
       'bold ' +
       fontSize +
-      "px 'Times New Roman', 'YuMincho', 'Hiragino Mincho ProN', 'Yu Mincho', 'MS PMincho', serif"
+      "px 'Times New Roman', 'YuMincho', 'Hiragino Mincho ProN', 'Yu Mincho', 'MS PMincho', 'Noto Serif JP', serif"
     );
   }
 
@@ -489,7 +502,7 @@ class App extends React.Component<AppProps, AppState> {
                     id="num_of_suspects"
                     min="2"
                     max="8"
-                    value={String(this.state.length)}
+                    value={String(this.state.length_text)}
                     onChange={this.handleMemberLengthChange}
                   />
                   <span>（2～8人）</span>

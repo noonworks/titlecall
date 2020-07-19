@@ -6,7 +6,7 @@ body {
   /* font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN',
     'Hiragino Sans', Meiryo, sans-serif; */
   font-family: 'Times New Roman', 'YuMincho', 'Hiragino Mincho ProN',
-    'Yu Mincho', 'MS PMincho', serif;
+    'Yu Mincho', 'MS PMincho', 'Noto Serif JP', serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

@@ -14,7 +14,14 @@ type FaceEditorState = {
   died: boolean;
 };
 
+export type Face = {
+  canvas: HTMLCanvasElement | null;
+  died: boolean;
+};
+
 class FaceEditor extends React.Component<FaceEditorProps, FaceEditorState> {
+  private editor: React.RefObject<AvatarEditor>;
+
   constructor(props: FaceEditorProps) {
     super(props);
     this.state = {
@@ -26,12 +33,11 @@ class FaceEditor extends React.Component<FaceEditorProps, FaceEditorState> {
     this.handleNewImage = this.handleNewImage.bind(this);
     this.handleDeleteImage = this.handleDeleteImage.bind(this);
     this.handleScale = this.handleScale.bind(this);
+    this.editor = React.createRef<AvatarEditor>();
   }
 
   handleDiedCheck(): void {
-    this.setState((state) => ({
-      died: !state.died,
-    }));
+    this.setState((state) => ({ died: !state.died }));
   }
 
   handleNewImage(e: React.ChangeEvent<HTMLInputElement>): void {
@@ -51,10 +57,36 @@ class FaceEditor extends React.Component<FaceEditorProps, FaceEditorState> {
     this.setState({ scale });
   }
 
+  public getImage(): HTMLCanvasElement | null {
+    if (!this.editor.current) return null;
+    try {
+      return this.editor.current.getImage();
+    } catch (ex) {
+      return null;
+    }
+  }
+
+  public getImageScaledToCanvas(): HTMLCanvasElement | null {
+    if (!this.editor.current) return null;
+    try {
+      return this.editor.current.getImageScaledToCanvas();
+    } catch (ex) {
+      return null;
+    }
+  }
+
+  public getFace(): Face {
+    return {
+      canvas: this.editor.current?.getImageScaledToCanvas() || null,
+      died: this.state.died,
+    };
+  }
+
   render() {
     return (
       <div className="FaceEditor">
         <AvatarEditor
+          ref={this.editor}
           className={
             'FaceEditor-Canvas' + (this.state.died ? ' FaceEditor-Died' : '')
           }
