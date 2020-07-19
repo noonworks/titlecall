@@ -6,6 +6,7 @@ type AppProps = {};
 
 type AppState = {
   length: number;
+  length_text: string;
   title: string;
   previewing: boolean;
   canDL: boolean;
@@ -76,6 +77,7 @@ class App extends React.Component<AppProps, AppState> {
     super(props);
     this.state = {
       length: DEFAULT_LENGTH,
+      length_text: '' + DEFAULT_LENGTH,
       title: '',
       previewing: false,
       canDL: false,
@@ -155,20 +157,24 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   handleMemberLengthChange(e: React.ChangeEvent<HTMLInputElement>) {
-    if (!e.target.value) return;
-    let length = parseInt(e.target.value);
-    if (length < 2) length = 2;
-    if (length > 8) length = 8;
+    const length_text = e.target.value || '';
+    let length = parseInt(length_text);
+    if (isNaN(length)) {
+      length = this.state.length;
+    } else {
+      if (length < 2) length = 2;
+      if (length > 8) length = 8;
+    }
     this.setState((state) => {
       if (length < state.editors.length) {
-        return { length, editors: state.editors.slice(0, length) };
+        return { length, length_text, editors: state.editors.slice(0, length) };
       } else if (length > state.editors.length) {
         const editors: React.RefObject<FaceEditor>[] = state.editors.slice();
         for (let i = state.editors.length; i < length; i++)
           editors.push(React.createRef<FaceEditor>());
-        return { length, editors };
+        return { length, length_text, editors };
       }
-      return { length, editors: state.editors.slice() };
+      return { length, length_text, editors: state.editors.slice() };
     });
   }
 
@@ -494,7 +500,7 @@ class App extends React.Component<AppProps, AppState> {
                     id="num_of_suspects"
                     min="2"
                     max="8"
-                    value={String(this.state.length)}
+                    value={String(this.state.length_text)}
                     onChange={this.handleMemberLengthChange}
                   />
                   <span>（2～8人）</span>
