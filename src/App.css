@@ -78,6 +78,20 @@
   margin: 1em auto 0 auto;
 }
 
+@media screen and (min-width: 360px) and (max-width: 480px) {
+  #Preview-Canvas {
+    width: 360px;
+    height: 270px;
+  }
+}
+
+@media screen and (max-width: 359px) {
+  #Preview-Canvas {
+    width: 320px;
+    height: 240px;
+  }
+}
+
 #Preview-Canvas-Cache-Face {
   display: none;
 }
